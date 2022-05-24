@@ -9,9 +9,6 @@ Most helpful is sex, density, size(CW), shell condition, eggs(secondary) and how
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-# Store string containing all required packages
-my_packages <- c('igraph', 'RColorBrewer', 'readr', 'ggplot2', 'tidyverse', 'berryFunctions', 'dplyr', 'stringr')
 ```
 
 Load the libraries and install packages
@@ -27,7 +24,6 @@ library(readr)
 library(leaflet)
 library(viridis)
 library(lubridate)
-
 ```
 
 Read in the raw species and transect data from GitHub
@@ -79,7 +75,6 @@ Reformat the date column to be yyyy-mm-dd
 
 ```{r}
 tempDf$Date = lubridate::mdy(tempDf$Date)
-
 ```
 
 Make a scatter plot of the temperature difference data
@@ -106,6 +101,7 @@ tempsValidDf <- subset(tempDf, Water.Temperature < 25 & Water.Temperature > 0, s
 
 ```
 
+Plots hourly difference in temperature at the different stations
 ```{r temp-range-by-facility, echo = FALSE}
 tempDf %>%
   ggplot(mapping = aes(x = `Field.Station`, 
@@ -123,6 +119,7 @@ tempDf %>%
   guides(fill = guide_legend(nrow=3))
   
 ```
+Plotting distribution of water temperature without the outliers
 ```{r temp-range-by-facility, echo = FALSE}
 tempsValidDf %>%
   ggplot(mapping = aes(x = `Field.Station`, 
@@ -140,13 +137,14 @@ tempsValidDf %>%
   guides(fill = guide_legend(nrow=3))
   
 ```
+Plotting distribution of just the ouliers of the temperature data 
 ```{r temp-range-by-facility, echo = FALSE}
 tempOutliersDf %>%
   ggplot(mapping = aes(x = `Field.Station`, 
                        y = `Water.Temperature`,
                        fill = `Field.Station`)) +
   geom_violin() +
-  labs(title = "Distribution of Recorded Water Temperatures Excluding Outliers",
+  labs(title = "Distribution of Recorded Water Temperatures Outliers",
        subtitle = "NeCSA Field Station",
        y = "Water Temperature (Celsius)") +
   theme(legend.position = "bottom",
@@ -192,6 +190,8 @@ p <- tempOutliersDf %>%
 p
 
 ```
+
+Plotting hourly difference in temperature recordings
 ```{r}
 ggplot(tempOutliersDf, aes(x=Date, y=Water.Temperature)) + geom_point()+ ggtitle("Hourly Difference in Temperature Recordings ") +
   xlab("Date") + ylab("Temperature Difference in degrees Celcius")
@@ -212,7 +212,7 @@ for(i in 17 : (nrow(tempAverageDf) - 27708)) {
 ```
 
 
-
+The following code generats the moving line graph. 
 ```{r}
 p <- tempAverageDf %>%
   filter(year(Date) == 2016, Field.Station %in% c("Darling Marine Center", "Shoals Marine Laboratory", "Bates-Morse Mountain Conservation Area", "Edward McC. Blair Marine Research Station (MDR)", "Schoodic Institute at Acadia National Park",  "Bigelow Laboratory for Ocean Sciences")) %>%
@@ -265,12 +265,10 @@ crabDf$Date <- paste(crabDf$mon, "-", crabDf$day, "-", crabDf$yr, sep="")
 crabDf %>%
   group_by(Species) %>%
   summarise(count = n())
-
 ```
 
 
 ```{r}
-
 tempDf %>%
   filter(year(Date) == 2016) %>% 
 ggplot(aes(x=day(Date),y=month(Date))) + geom_tile(aes(fill=Water.Temperature)) + scale_fill_viridis() +
@@ -379,10 +377,6 @@ ggplot(aes(x=species, fill=eye_color)) +
        x = "Species")
 ```
 
-
-
-
-
 ```{r Manomet data prep}
 man_data <- read.csv("GC_intertidal_all_rawdata.csv") # loading in Manomet data from local csv file
 head(man_data) # previewing data 
@@ -400,7 +394,6 @@ The different sites in the Manomet data are BR, DMC, FI, KB, LC, NM, RH, SP, HI,
 
 Creating date column which will combine all parts of the date into one column with standard format
 ```{r}
-
 man_data$Date <- paste(man_data$mon, "-", man_data$day, "-", man_data$yr, sep="") # this combines all date pieces into one format and a new Date column
 
 # removing all columns we do not need for analysis
@@ -426,7 +419,6 @@ man_data <- man_data %>%
          `Common Name` = case_when(Species == "Cm" ~ "Green Crab"),
          )
 ```
-
 
 This next chunk creates a bar graph by month or year of crabs found at each site. It then colors the bars by species.
 ```{r}
@@ -479,5 +471,3 @@ crab %>%
   facet_wrap(~Site)   # classify each sub-graph by sites
   #coord_flip()       # flip rows and columns
 ```
-
-
