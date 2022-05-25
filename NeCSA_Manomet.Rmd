@@ -5,6 +5,11 @@ date: "5/10/2022"
 output: html_document
 ---
 
+Executive Summary
+	We received two datasets from the Northeastern Coastal Station Alliance (NeCSA) relating to trends in temperature and biological diversity over the course of 24 and 13 month periods, respectively. NeCSA consists of ten small coastal stations along the gulf of Maine. The bulk of our initial work consisted of cleaning and adjusting the data so that we could analyze and create visualizations for it. We fixed typos in the entries, the date formatting, and we have some suggestions for more efficient protocols for future data collection so that the datasets will be easier to work with in a technical setting. For example, in the biological diversity dataframe, there were several variables related to the abundance of certain crab species within a quadrat or along a transect. The values for these variables were sometimes recorded as zeroes, sometimes left blank, and sometimes as ‘NA’.
+
+Manomet Notes:
+
 Most helpful is sex, density, size(CW), shell condition, eggs(secondary) and how that varies over different seasons and by site. Protocol for entering this data and how this can be an easier/standardized process across the different sites. 
 
 ```{r setup, include=FALSE}
@@ -471,3 +476,27 @@ crab %>%
   facet_wrap(~Site)   # classify each sub-graph by sites
   #coord_flip()       # flip rows and columns
 ```
+
+Green Crab/Manomet Data Collection Protocol:
+
+Site
+Key for abbreviation should be included (like species key) if information is shared with outside partners
+Elevation
+This is inconsistent across entries so there needs to be a standard way to enter it. Sometimes it is upper or lower and sometimes it is a number or range 
+Species 
+There were capitalisation typos which we fixed but there should be a standard protocol for only the first letter of the abbreviation being capitalized instead of both which some entries had. If this is just typos our code can fix this in any similarly formatted datasets.
+Sex
+Sometimes this is recorded as M or F and sometimes it's 2. If 2 is male or female it should be standard if it means something else that should be included in the key. 
+Color
+The overview section states that this should be a numerical value but in some cases this is listed as a categorical entry (Like G or R). This appears to only be an issue in 2018 so it seems like it has been addressed. 
+
+
+Transect/Species data:
+
+If time is not going to be filled out this column can be removed to save time when entering the data
+Everything else would be efficiency suggestions for those entering the data which does not affect us. For example having the field stations full name and abbreviations is not necessary in every entry
+
+
+Temperature data:
+
+Include Tide for each data entry
